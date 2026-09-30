@@ -42,3 +42,28 @@ The generated logs are saved as JSON files in `backend/data/`:
 - `app_logs.json`
 
 A `ground_truth.json` file is also generated, detailing the exact events that belong to the hidden attack. This file is strictly for testing and validation.
+
+## Stage 2: Correlation Engine and API
+The correlation engine maps individual events into incident chains using a rule-based logic (matching shared IPs, users, and hosts within a time window). It scores risk and exposes the results via a FastAPI server.
+
+### Running the API
+From the `backend/` directory, start the server:
+```bash
+uvicorn main:app --reload
+```
+The API will be available at `http://localhost:8000`.
+
+Endpoints:
+- `GET /health` - API status
+- `GET /incidents` - List all detected incident chains
+- `GET /incidents/{id}` - View the exact timeline of a specific incident
+- `GET /incidents/{id}/graph` - Get NetworkX JSON for frontend rendering
+- `GET /events` - View all raw standardized events
+
+### Evaluation
+To grade the correlator against the generated `ground_truth.json`:
+```bash
+cd backend
+python evaluate.py
+```
+*Note: Because this engine is purely rule-based, expect high false-positives!*
