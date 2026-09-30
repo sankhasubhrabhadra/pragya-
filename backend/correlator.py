@@ -104,6 +104,16 @@ class IncidentChain:
             self.severity = "medium"
         else:
             self.severity = "low"
+            
+        # Boost risk score and potentially severity based on anomaly scores of events in the chain
+        max_anomaly = max([e.event.anomaly_score for e in self.events], default=0.0)
+        if max_anomaly > config.ANOMALY_THRESHOLD:
+            self.risk_score += config.ANOMALY_SEVERITY_BOOST
+            
+            # Simple severity bump logic
+            bump_map = {"low": "medium", "medium": "high", "high": "critical", "critical": "critical"}
+            if max_anomaly > 0.8: # If highly anomalous, bump severity
+                self.severity = bump_map.get(self.severity, self.severity)
 
 def correlate_events(events: List[Event]) -> List[IncidentChain]:
     """

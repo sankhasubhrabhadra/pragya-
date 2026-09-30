@@ -15,6 +15,8 @@ class Event(BaseModel):
     dest_ip: Optional[str] = None
     event_type: Optional[str] = None
     details: Optional[str] = None
+    anomaly_score: float = 0.0
+    anomaly_reasons: List[str] = []
 
 def load_logs(data_dir: str = "data") -> List[Event]:
     """Reads all log files from the given directory, standardizes them into Event objects, and sorts them chronologically."""

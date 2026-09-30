@@ -5,29 +5,37 @@ from typing import Optional
 from loader import load_logs
 from correlator import correlate_events
 from graph_builder import build_attack_graph
+import baseline
+import anomaly
 
 app = FastAPI(title="PRAGYA API", description="AI Cyber Incident Investigator API")
 
 # Enable CORS for React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict to actual frontend domains
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Global state to hold loaded logs and correlated incidents for the demo
-# In a real app, these would be in a database
 all_events = []
 incidents = []
+profiles = {}
 
 @app.on_event("startup")
 def startup_event():
-    """Loads logs and runs correlation engine on startup."""
-    global all_events, incidents
+    """Loads logs, builds baseline, scores anomalies, and correlates incidents."""
+    global all_events, incidents, profiles
     print("Loading raw events from disk...")
     all_events = load_logs("data")
+    
+    print("Building baseline profiles from normal days...")
+    profiles = baseline.build_profiles(all_events)
+    
+    print("Scoring anomalous behavior...")
+    all_events = anomaly.score_events(all_events, profiles)
+    
     print(f"Loaded {len(all_events)} events. Running correlation engine...")
     incidents = correlate_events(all_events)
     print(f"Detected {len(incidents)} incidents.")
@@ -89,6 +97,30 @@ def get_events(
         filtered = [e for e in filtered if e.host == host]
         
     return [e.dict() for e in filtered]
+
+@app.get("/incidents/{incident_id}/anomalies")
+def get_incident_anomalies(incident_id: str):
+    """Retrieve only the anomalous events for a specific incident."""
+    for inc in incidents:
+        if inc.id == incident_id:
+            anomalous = [e.to_dict() for e in inc.events if e.event.anomaly_score > 0]
+            return anomalous
+    raise HTTPException(status_code=404, detail="Incident not found")
+
+@app.get("/users/{user}/profile")
+def get_user_profile(user: str):
+    """Retrieve the baseline behavior profile for a user."""
+    if user in profiles:
+        return profiles[user]
+    raise HTTPException(status_code=404, detail="Profile not found")
+
+@app.get("/anomalies")
+def get_all_anomalies():
+    """Retrieve the top most anomalous events across all data."""
+    # Filter and sort raw events by anomaly score
+    anomalies = [e.dict() for e in all_events if e.anomaly_score > 0.5]
+    anomalies.sort(key=lambda x: x["anomaly_score"], reverse=True)
+    return anomalies[:100]  # Return top 100
 
 if __name__ == "__main__":
     import uvicorn

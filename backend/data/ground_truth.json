@@ -1,126 +1,126 @@
 [
   {
-    "event_id": "95c7a880-bf8a-421c-bf30-eebd7406cb95",
+    "event_id": "3ccd1dde-27f8-4db0-b64c-50477c6dc0fc",
     "attack_stage": "initial access",
     "details": "Mapped to initial access"
   },
   {
-    "event_id": "bad914a2-3550-47a3-b4ed-20c003422cb2",
+    "event_id": "c297dc15-f339-4eef-9320-c05873fd1319",
     "attack_stage": "initial access",
     "details": "Mapped to initial access"
   },
   {
-    "event_id": "b01d8263-282b-4b01-8bfb-1d6043c5d656",
+    "event_id": "f4013e76-5ac8-4a71-b902-af180dae7b1e",
     "attack_stage": "initial access",
     "details": "Mapped to initial access"
   },
   {
-    "event_id": "6bb1d648-1b8d-4ae0-855e-fb23e0524cea",
+    "event_id": "9b5d22b1-7485-4ed4-84b4-cf38d30dd4a2",
     "attack_stage": "initial access",
     "details": "Mapped to initial access"
   },
   {
-    "event_id": "7dc99fcf-b7e6-4a27-80dc-ff47615e9b68",
+    "event_id": "c6b0289e-2364-4dc8-b9c7-7b7de9acd754",
     "attack_stage": "initial access",
     "details": "Mapped to initial access"
   },
   {
-    "event_id": "ab1b853f-a8d4-45ef-9761-aeb48928e4c3",
+    "event_id": "11c2efe0-9e72-4443-8150-6080a8598e81",
     "attack_stage": "credential compromise",
     "details": "Mapped to credential compromise"
   },
   {
-    "event_id": "18a53b74-21a3-4bd1-bc13-404e4cf4469c",
+    "event_id": "69759cdd-aa16-4d72-8ead-aeb137a0b1a7",
     "attack_stage": "initial access",
     "details": "Mapped to initial access"
   },
   {
-    "event_id": "7627dd2b-d1bd-4734-bda8-9724280481aa",
+    "event_id": "f9b8e284-059c-42e9-8fa5-d81aae0f662f",
     "attack_stage": "lateral movement",
     "details": "Mapped to lateral movement"
   },
   {
-    "event_id": "f1d1978a-3495-45bd-9ca2-fb883cd3d010",
+    "event_id": "277f142a-3852-4ee2-8f5e-bd729a6ef7e9",
     "attack_stage": "lateral movement",
     "details": "Mapped to lateral movement"
   },
   {
-    "event_id": "3d073284-33f3-4896-93e7-2b8340970f6d",
+    "event_id": "ccc15d7b-8f75-4b0d-aac9-5a0d70271cb5",
     "attack_stage": "privilege escalation",
     "details": "Mapped to privilege escalation"
   },
   {
-    "event_id": "6ad34691-3c17-4c6f-9f99-41e4e215048c",
+    "event_id": "69eeef05-0232-4323-9a2b-647d05b77b59",
     "attack_stage": "privilege escalation",
     "details": "Mapped to privilege escalation"
   },
   {
-    "event_id": "a66106e2-d06b-424b-bf90-8edcb3038c30",
+    "event_id": "e42560d1-10ff-442f-9878-533a8812c724",
     "attack_stage": "privilege escalation",
     "details": "Mapped to privilege escalation"
   },
   {
-    "event_id": "f811d97f-70c1-4259-b2a7-ce6b639b0793",
+    "event_id": "c809498c-9324-4693-8b4a-02951a289532",
     "attack_stage": "lateral movement",
     "details": "Mapped to lateral movement"
   },
   {
-    "event_id": "08948b3d-4d2c-45f7-94ed-e46b5084f74c",
+    "event_id": "3309afb6-acd5-4a6b-9289-360dbe52f29c",
     "attack_stage": "data access",
     "details": "Mapped to data access"
   },
   {
-    "event_id": "e5adc2e5-2c0b-423e-8ad6-9f96ba1157ce",
+    "event_id": "530fe64c-e9ad-4f12-9180-1eff8a8f1561",
     "attack_stage": "impact",
     "details": "Mapped to impact"
   },
   {
-    "event_id": "a62f6b82-5668-44de-bdbc-763d86bb4486",
+    "event_id": "1ec71c6a-0b1b-4873-9aa2-0567a722c63e",
     "attack_stage": "impact",
     "details": "Mapped to impact"
   },
   {
-    "event_id": "e27aab16-a829-4601-8fd0-3f204be1d056",
+    "event_id": "10437eb2-337d-4922-b1f9-d3b032260412",
     "attack_stage": "impact",
     "details": "Mapped to impact"
   },
   {
-    "event_id": "183fc44a-ca79-4fda-a23f-1807fe611b30",
+    "event_id": "382d7d92-b6fa-49e7-92be-bdb78127221d",
     "attack_stage": "impact",
     "details": "Mapped to impact"
   },
   {
-    "event_id": "7a4956e6-ec99-4ee5-9a3f-67b76d213e67",
+    "event_id": "9786f30a-9fe5-411e-86e8-658d2d04536c",
     "attack_stage": "impact",
     "details": "Mapped to impact"
   },
   {
-    "event_id": "4624289b-7e0f-4eec-8438-ca2d27476e9d",
+    "event_id": "46d84560-5b1b-48fa-a3e7-00fb2986af3a",
     "attack_stage": "impact",
     "details": "Mapped to impact"
   },
   {
-    "event_id": "0aab63a6-9c36-46e4-89df-43b5015b2494",
+    "event_id": "23621cfe-27ea-4d46-bd74-9a0446579aff",
     "attack_stage": "impact",
     "details": "Mapped to impact"
   },
   {
-    "event_id": "66f6c0d5-f404-4c12-96e4-e93bc19087dd",
+    "event_id": "def433d1-59e4-42f5-9225-0f5e82fb596e",
     "attack_stage": "impact",
     "details": "Mapped to impact"
   },
   {
-    "event_id": "6b1f395b-d9dd-431b-818e-06f282c223ea",
+    "event_id": "377cf44e-1cb1-43bb-88a3-799fac5a1b03",
     "attack_stage": "impact",
     "details": "Mapped to impact"
   },
   {
-    "event_id": "0c07aa15-ece3-4275-a661-5c14008d35c8",
+    "event_id": "1eb1c47b-97ea-4e3c-8487-aa57544ce498",
     "attack_stage": "impact",
     "details": "Mapped to impact"
   },
   {
-    "event_id": "0d2195e0-72e4-465e-a8d7-a1ea27916899",
+    "event_id": "32835063-6a05-4d96-814e-b1d420e1b8cc",
     "attack_stage": "exfiltration",
     "details": "Mapped to exfiltration"
   }

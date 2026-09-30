@@ -271,12 +271,71 @@ def inject_attack(start_date, days):
 
     return auth_logs, firewall_logs, endpoint_logs, app_logs, ground_truth
 
+def inject_decoys(start_date, days):
+    """
+    Injects decoy scenarios that look suspicious but are benign.
+    1. Student with typo-related failed logins.
+    2. Faculty working late at night from a known IP.
+    """
+    decoy_date = start_date + timedelta(days=days-2) # Day before the attack
+    
+    auth_logs = []
+    endpoint_logs = []
+    app_logs = []
+    
+    def add_decoy_event(log_list, event_dict):
+        event_dict["event_id"] = str(uuid.uuid4())
+        log_list.append(event_dict)
+
+    # Decoy 1: Student-101 typos
+    t = decoy_date.replace(hour=14, minute=30, second=0)
+    for _ in range(15):
+        add_decoy_event(auth_logs, {
+            "timestamp": t.isoformat(),
+            "user": "Student-101",
+            "source_ip": "10.0.50.15",
+            "result": "fail",
+            "method": "password"
+        })
+        t += timedelta(seconds=random.randint(2, 5))
+    
+    add_decoy_event(auth_logs, {
+        "timestamp": t.isoformat(),
+        "user": "Student-101",
+        "source_ip": "10.0.50.15",
+        "result": "success",
+        "method": "password"
+    })
+    
+    # Decoy 2: Faculty-10 working late
+    t2 = decoy_date.replace(hour=3, minute=15, second=0)
+    add_decoy_event(auth_logs, {
+        "timestamp": t2.isoformat(),
+        "user": "Faculty-10",
+        "source_ip": "10.0.60.20", # Assume known IP
+        "result": "success",
+        "method": "password"
+    })
+    
+    for i in range(5):
+        t2 += timedelta(minutes=5)
+        add_decoy_event(endpoint_logs, {
+            "timestamp": t2.isoformat(),
+            "host": "FILE-SERVER-01",
+            "user": "Faculty-10",
+            "event_type": "file_modify",
+            "details": f"/shares/faculty10/research_draft_v{i}.docx"
+        })
+        
+    return auth_logs, endpoint_logs, app_logs
+
 def main():
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="PRAGYA Synthetic Log Generator (Stage 1)")
     parser.add_argument("--days", type=int, default=7, help="Number of days to simulate (default: 7)")
     parser.add_argument("--noise-level", type=int, default=5, help="Multiplier for background noise (default: 5)")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility (default: 42)")
+    parser.add_argument("--decoys", action="store_true", help="Add benign decoys to test anomaly detection")
     args = parser.parse_args()
 
     # Ensure reproducibility
@@ -293,11 +352,16 @@ def main():
     print("[*] Injecting hidden ransomware attack scenario...")
     auth_atk, fw_atk, ep_atk, app_atk, ground_truth = inject_attack(start_date, args.days)
 
-    # Combine noise and attack logs, then sort them by timestamp
-    auth_logs = sorted(auth_noise + auth_atk, key=lambda x: x["timestamp"])
+    auth_dec, ep_dec, app_dec = [], [], []
+    if args.decoys:
+        print("[*] Injecting benign decoys...")
+        auth_dec, ep_dec, app_dec = inject_decoys(start_date, args.days)
+
+    # Combine noise, attack logs, and decoys, then sort them by timestamp
+    auth_logs = sorted(auth_noise + auth_atk + auth_dec, key=lambda x: x["timestamp"])
     firewall_logs = sorted(fw_noise + fw_atk, key=lambda x: x["timestamp"])
-    endpoint_logs = sorted(ep_noise + ep_atk, key=lambda x: x["timestamp"])
-    app_logs = sorted(app_noise + app_atk, key=lambda x: x["timestamp"])
+    endpoint_logs = sorted(ep_noise + ep_atk + ep_dec, key=lambda x: x["timestamp"])
+    app_logs = sorted(app_noise + app_atk + app_dec, key=lambda x: x["timestamp"])
 
     data_dir = "data"
     if not os.path.exists(data_dir):

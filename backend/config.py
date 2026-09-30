@@ -9,3 +9,9 @@ MIN_CHAIN_LENGTH = 4
 
 # Minimum total risk score for a chain to be considered an incident
 MIN_RISK_SCORE = 2.0 
+
+# Anomaly Configuration
+ANOMALY_RULE_WEIGHT = 0.5
+ANOMALY_ML_WEIGHT = 0.5
+ANOMALY_THRESHOLD = 0.6  # Score above this is flagged anomalous
+ANOMALY_SEVERITY_BOOST = 1.0  # Amount to add to chain risk score if an event is highly anomalous
