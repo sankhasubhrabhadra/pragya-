@@ -293,7 +293,7 @@ def inject_decoys(start_date, days):
         add_decoy_event(auth_logs, {
             "timestamp": t.isoformat(),
             "user": "Student-101",
-            "source_ip": "10.0.50.15",
+            "source_ip": "10.0.99.101",
             "result": "fail",
             "method": "password"
         })
@@ -302,7 +302,7 @@ def inject_decoys(start_date, days):
     add_decoy_event(auth_logs, {
         "timestamp": t.isoformat(),
         "user": "Student-101",
-        "source_ip": "10.0.50.15",
+        "source_ip": "10.0.99.101",
         "result": "success",
         "method": "password"
     })

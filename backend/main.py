@@ -22,6 +22,7 @@ app.add_middleware(
 all_events = []
 incidents = []
 profiles = {}
+reports = {}
 
 @app.on_event("startup")
 def startup_event():
@@ -121,6 +122,58 @@ def get_all_anomalies():
     anomalies = [e.dict() for e in all_events if e.anomaly_score > 0.5]
     anomalies.sort(key=lambda x: x["anomaly_score"], reverse=True)
     return anomalies[:100]  # Return top 100
+
+from sse_starlette.sse import EventSourceResponse
+import agent
+import tools
+import config
+
+@app.post("/incidents/{incident_id}/investigate")
+def investigate_incident(incident_id: str, mode: Optional[str] = None):
+    """Starts the agent investigation and streams steps via SSE."""
+    active_mode = mode or config.AGENT_MODE
+    return EventSourceResponse(agent.investigate(incident_id, active_mode))
+
+@app.get("/incidents/{incident_id}/report")
+def get_incident_report(incident_id: str):
+    """Retrieve the latest completed agent report."""
+    if incident_id in reports:
+        return reports[incident_id]
+    raise HTTPException(status_code=404, detail="Report not found. You must run the investigation first.")
+
+@app.post("/incidents/{incident_id}/contain")
+def contain_incident(incident_id: str):
+    """Simulate applying the containment plan (Read-Only)."""
+    # This is a simulation endpoint that proves we do not execute actions.
+    if incident_id not in reports:
+         # Fallback to generating it on the fly if report isn't ready
+         plan = tools.AVAILABLE_TOOLS["generate_containment_plan"](incident_id)
+         actions = plan.get("containment_plan", [])
+    else:
+         actions = reports[incident_id].get("containment_plan", [])
+         
+    return {
+        "status": "pending_approval",
+        "message": "Containment actions staged. Awaiting human approval.",
+        "actions_staged": actions
+    }
+
+@app.get("/agent/status")
+def agent_status():
+    """Returns the current configured LLM mode and reachability."""
+    mode = config.AGENT_MODE
+    status = "reachable"
+    if mode == "gemini" and not config.GEMINI_API_KEY:
+        status = "missing_api_key"
+    elif mode == "ollama":
+        # In a real app we'd ping localhost:11434
+        status = "assumed_reachable"
+        
+    return {
+        "configured_mode": mode,
+        "status": status,
+        "max_steps": config.MAX_AGENT_STEPS
+    }
 
 if __name__ == "__main__":
     import uvicorn

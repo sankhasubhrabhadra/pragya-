@@ -97,23 +97,27 @@ class IncidentChain:
         hosts_touched = {e.event.host for e in self.events if e.event.host}
         
         if "exfiltration" in stages_reached or "data_access" in stages_reached:
-            self.severity = "critical"
+            base_severity = "critical"
         elif "privilege_escalation" in stages_reached or len(hosts_touched) >= 3:
-            self.severity = "high"
+            base_severity = "high"
         elif "lateral_movement" in stages_reached or len(hosts_touched) >= 2:
-            self.severity = "medium"
+            base_severity = "medium"
         else:
-            self.severity = "low"
+            base_severity = "low"
+            
+        self.severity = base_severity
             
         # Boost risk score and potentially severity based on anomaly scores of events in the chain
         max_anomaly = max([e.event.anomaly_score for e in self.events], default=0.0)
         if max_anomaly > config.ANOMALY_THRESHOLD:
-            self.risk_score += config.ANOMALY_SEVERITY_BOOST
+            self.risk_score = 0.5 * len(self.events) + config.ANOMALY_SEVERITY_BOOST
             
-            # Simple severity bump logic
+            # Simple severity bump logic applied to base severity
             bump_map = {"low": "medium", "medium": "high", "high": "critical", "critical": "critical"}
             if max_anomaly > 0.8: # If highly anomalous, bump severity
-                self.severity = bump_map.get(self.severity, self.severity)
+                self.severity = bump_map.get(base_severity, base_severity)
+        else:
+            self.risk_score = 0.5 * len(self.events)
 
 def correlate_events(events: List[Event]) -> List[IncidentChain]:
     """

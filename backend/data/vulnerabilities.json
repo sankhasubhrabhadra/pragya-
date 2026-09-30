@@ -1,0 +1,42 @@
+[
+  {
+    "id": "CVE-2024-9001",
+    "software": "OpenVPN 2.4.7",
+    "severity": "critical",
+    "description": "Pre-auth remote code execution in VPN gateway.",
+    "fix": "Upgrade to 2.5.8",
+    "known_hosts": ["SERVER-07"]
+  },
+  {
+    "id": "CVE-2024-9002",
+    "software": "Apache Struts 2",
+    "severity": "high",
+    "description": "Remote code execution via crafted OGNL expression.",
+    "fix": "Patch to latest version",
+    "known_hosts": ["student-portal"]
+  },
+  {
+    "id": "CVE-2023-8888",
+    "software": "MySQL 5.7",
+    "severity": "medium",
+    "description": "Local privilege escalation via poor file permissions.",
+    "fix": "Apply chown and upgrade to 8.0",
+    "known_hosts": ["DB-SERVER-01"]
+  },
+  {
+    "id": "CVE-2023-8999",
+    "software": "Samba 4.10",
+    "severity": "high",
+    "description": "SMB vulnerability allowing unauthenticated file read.",
+    "fix": "Patch Samba or disable SMBv1",
+    "known_hosts": ["FILE-SERVER-01"]
+  },
+  {
+    "id": "CVE-2022-7777",
+    "software": "OpenSSH 7.9",
+    "severity": "low",
+    "description": "User enumeration via timing attack.",
+    "fix": "Upgrade to 8.4",
+    "known_hosts": ["ADMIN-SERVER", "SERVER-07"]
+  }
+]
