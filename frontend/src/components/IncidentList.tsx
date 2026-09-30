@@ -1,4 +1,4 @@
-import { IncidentChain } from '../api';
+import { type IncidentChain } from '../api';
 import clsx from 'clsx';
 import { ShieldAlert, Shield, ShieldCheck, AlertTriangle } from 'lucide-react';
 
@@ -37,11 +37,18 @@ export default function IncidentList({ incidents, selectedId, onSelect }: Incide
           const Icon = config.icon;
           const isSelected = selectedId === inc.id;
 
-          // Simple time range
-          const times = inc.events.map(e => new Date(e.event.timestamp).getTime());
-          const min = Math.min(...times);
-          const max = Math.max(...times);
-          const timeRange = `${new Date(min).toLocaleTimeString()} - ${new Date(max).toLocaleTimeString()}`;
+          // Simple time range from summary or fallback to calculating from events
+          let timeRange = '';
+          if (inc.start_time && inc.end_time) {
+            timeRange = `${new Date(inc.start_time).toLocaleTimeString()} - ${new Date(inc.end_time).toLocaleTimeString()}`;
+          } else if (inc.events && inc.events.length > 0) {
+            const times = inc.events.map(e => new Date(e.event.timestamp).getTime());
+            const min = Math.min(...times);
+            const max = Math.max(...times);
+            timeRange = `${new Date(min).toLocaleTimeString()} - ${new Date(max).toLocaleTimeString()}`;
+          }
+
+          const eventCount = inc.event_count ?? inc.events?.length ?? 0;
 
           return (
             <button
@@ -62,7 +69,7 @@ export default function IncidentList({ incidents, selectedId, onSelect }: Incide
                 </span>
               </div>
               <p className="text-xs text-slate-400 mb-2 truncate">
-                {inc.events.length} correlated events
+                {eventCount} correlated events
               </p>
               <div className="flex justify-between items-center text-[10px] text-slate-500">
                 <span>Score: {inc.risk_score.toFixed(1)}</span>

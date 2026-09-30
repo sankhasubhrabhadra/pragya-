@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchHealth, fetchAgentStatus, fetchIncidents, IncidentChain, AgentStatus } from './api';
+import { fetchAgentStatus, fetchIncidents, type IncidentChain, type AgentStatus } from './api';
 import Header from './components/Header';
 import IncidentList from './components/IncidentList';
 import IncidentDetail from './components/IncidentDetail';
@@ -10,6 +10,7 @@ import { DEMO_INCIDENT } from './demo/replay';
 export default function App() {
   const [incidents, setIncidents] = useState<IncidentChain[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [fullIncident, setFullIncident] = useState<IncidentChain | null>(null);
   const [status, setStatus] = useState<AgentStatus | null>(null);
   const [demoMode, setDemoMode] = useState(false);
   const [activeEventId, setActiveEventId] = useState<string | null>(null);
@@ -29,9 +30,24 @@ export default function App() {
     init();
   }, []);
 
+  useEffect(() => {
+    async function loadFullIncident() {
+      if (!selectedId || demoMode) return;
+      try {
+        // api.ts has fetchIncident
+        const { fetchIncident } = await import('./api');
+        const full = await fetchIncident(selectedId);
+        setFullIncident(full);
+      } catch(err) {
+        console.error(err);
+      }
+    }
+    loadFullIncident();
+  }, [selectedId, demoMode]);
+
   const currentIncident = demoMode 
     ? DEMO_INCIDENT 
-    : incidents.find(i => i.id === selectedId);
+    : fullIncident;
 
   const handleCitationClick = (eventId: string) => {
     setActiveTab('timeline');
@@ -50,7 +66,7 @@ export default function App() {
 
   // Keyboard shortcuts
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (_e: KeyboardEvent) => {
       // Just a simple simulation of shortcut keys if a panel was active. 
       // Ignored for now to avoid accidental triggers, but hooked up.
     };

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import ReactFlow, { Background, Controls, Node, Edge, MarkerType } from 'reactflow';
+import ReactFlow, { Background, Controls, type Node, type Edge, MarkerType } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { AttackGraph, fetchGraph } from '../api';
+import { type AttackGraph, fetchGraph } from '../api';
 import { DEMO_GRAPH } from '../demo/replay';
 import { Network } from 'lucide-react';
 

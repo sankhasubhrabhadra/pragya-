@@ -21,7 +21,10 @@ export interface MappedEvent {
 
 export interface IncidentChain {
   id: string;
-  events: MappedEvent[];
+  events?: MappedEvent[]; // Full detail view has this
+  event_count?: number; // Summary view from /incidents has this
+  start_time?: string;
+  end_time?: string;
   risk_score: number;
   severity: 'low' | 'medium' | 'high' | 'critical';
 }

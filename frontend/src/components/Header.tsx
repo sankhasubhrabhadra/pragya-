@@ -1,5 +1,5 @@
-import { Activity, ShieldAlert, Server, Play, StopCircle } from 'lucide-react';
-import { AgentStatus } from '../api';
+import { Activity, ShieldAlert, Server } from 'lucide-react';
+import { type AgentStatus } from '../api';
 
 interface HeaderProps {
   status: AgentStatus | null;

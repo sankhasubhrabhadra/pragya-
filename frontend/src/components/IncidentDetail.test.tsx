@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import IncidentDetail from './IncidentDetail';
-import { IncidentChain } from '../api';
+import { type IncidentChain } from '../api';
 
 describe('IncidentDetail', () => {
   const mockIncident: IncidentChain = {

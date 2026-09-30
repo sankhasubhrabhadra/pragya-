@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { parseSSE } from '../lib/sse';
-import { FinalReport, containIncident, API_BASE_URL } from '../api';
-import { Bot, CheckCircle, CircleDashed, Server, Terminal, ShieldAlert, ArrowRight, Download } from 'lucide-react';
+import { type FinalReport, containIncident, API_BASE_URL } from '../api';
+import { Bot, CheckCircle, CircleDashed, Server, Terminal, ShieldAlert, Download, Play } from 'lucide-react';
 import clsx from 'clsx';
 import { getDemoInvestigationStream } from '../demo/replay';
 

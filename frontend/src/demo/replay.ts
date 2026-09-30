@@ -1,4 +1,4 @@
-import { AgentStatus, AttackGraph, IncidentChain, MappedEvent } from '../api';
+import { type AttackGraph, type IncidentChain } from '../api';
 
 export const DEMO_INCIDENT: IncidentChain = {
   id: "INC-DEMO-9999",

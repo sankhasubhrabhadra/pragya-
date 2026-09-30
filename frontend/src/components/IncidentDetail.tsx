@@ -1,4 +1,4 @@
-import { IncidentChain } from '../api';
+import { type IncidentChain } from '../api';
 import clsx from 'clsx';
 import { Network, Server, User, Globe, AlertTriangle } from 'lucide-react';
 
@@ -27,7 +27,8 @@ function getSourceIcon(source: string) {
 }
 
 export default function IncidentDetail({ incident, activeEventId }: IncidentDetailProps) {
-  const reachedStages = new Set(incident.events.map(e => e.stage));
+  const events = incident.events || [];
+  const reachedStages = new Set(events.map(e => e.stage));
 
   return (
     <div className="flex flex-col h-full bg-slate-950 text-slate-300 overflow-y-auto">
@@ -40,7 +41,7 @@ export default function IncidentDetail({ incident, activeEventId }: IncidentDeta
           </span>
         </div>
         <p className="text-sm text-slate-400">
-          {incident.events.length} seemingly unrelated events correlated into a probable attack chain.
+          {events.length} seemingly unrelated events correlated into a probable attack chain.
         </p>
       </div>
 
@@ -53,7 +54,7 @@ export default function IncidentDetail({ incident, activeEventId }: IncidentDeta
         <div className="relative pl-6 space-y-8 before:absolute before:inset-0 before:ml-[1.125rem] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-800 before:to-transparent">
           {STAGES.map((stageName, idx) => {
             const isReached = reachedStages.has(stageName);
-            const stageEvents = incident.events.filter(e => e.stage === stageName);
+            const stageEvents = events.filter(e => e.stage === stageName);
             
             return (
               <div key={stageName} className={clsx("relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active", isReached ? 'opacity-100' : 'opacity-40')}>
