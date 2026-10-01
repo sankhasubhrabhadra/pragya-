@@ -5,7 +5,7 @@ import './index.css'
 
 import { ErrorBoundary } from 'react-error-boundary'
 
-function Fallback({ error }: { error: Error }) {
+function Fallback({ error }: any) {
   return (
     <div role="alert" style={{ color: 'red', padding: '20px', background: 'black' }}>
       <p>Something went wrong:</p>

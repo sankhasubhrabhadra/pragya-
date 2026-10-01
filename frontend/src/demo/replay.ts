@@ -66,7 +66,7 @@ const DEMO_STREAM_CHUNKS = [
       confidence: "high",
       confidence_reason: "Multiple distinct attack stages matched known ransomware kill chains with strong anomaly correlation.",
       evidence_event_ids: ["evt-1", "evt-2", "evt-3", "evt-4", "evt-5", "evt-6"],
-      timeline: DEMO_INCIDENT.events.map(e => ({ timestamp: e.event.timestamp, stage: e.stage, description: e.reason, event_id: e.event.event_id })),
+      timeline: DEMO_INCIDENT.events!.map(e => ({ timestamp: e.event.timestamp, stage: e.stage, description: e.reason, event_id: e.event.event_id })),
       affected_assets: ["Faculty-42", "SERVER-07 (High)", "DB-MAIN (Critical)"],
       containment_plan: [
         { action: "isolate_host", target: "SERVER-07", reason: "Prevent lateral movement", risk: "Disrupts internal services" },
